@@ -1,0 +1,200 @@
+{
+  "account": {
+    "label": "demo-primary",
+    "state_dir": "~/.claude/trader-state/demo-primary"
+  },
+  "goal": {
+    "profit_target_pct": 10.0
+  },
+  "risk": {
+    "daily_loss_limit_pct": 3.0,
+    "total_loss_limit_pct": 6.0,
+    "flatten_buffer_pct": 0.3,
+    "risk_budget_divisor_K": 3,
+    "per_trade_risk_cap_pct": 0.5,
+    "daily_baseline": "equity_at_server_midnight",
+    "total_baseline": "static_initial_balance",
+    "server_day_reset_hour": 0,
+    "max_open_positions": 3,
+    "max_open_risk_pct": 1.5,
+    "max_new_trades_per_day": 10,
+    "max_unplanned_trades_per_day": 1,
+    "near_wall_pct": 1.0,
+    "near_wall_mult": 0.5,
+    "ladder": {
+      "daily": [
+        {
+          "loss_pct": 1.5,
+          "risk_mult": 0.5,
+          "require_status": "confirmed"
+        }
+      ],
+      "total": [
+        {
+          "loss_pct": 3.0,
+          "risk_mult": 0.5
+        },
+        {
+          "loss_pct": 4.5,
+          "risk_mult": 0.5,
+          "require_status": "confirmed"
+        }
+      ]
+    },
+    "streak": {
+      "two_losses": {
+        "risk_mult": 0.5,
+        "minutes": 120
+      },
+      "three_losses": {
+        "pause_minutes": 60
+      },
+      "four_losses": {
+        "halt_rest_of_day": true
+      }
+    },
+    "status_risk_mult": {
+      "unknown": 0.2,
+      "изучаю": 0.2,
+      "карантин": 0.1,
+      "подтверждён": 1.0
+    },
+    "max_costs_R": 0.1,
+    "server_utc_offset_hours": 3
+  },
+  "model": {
+    "profile": "strong",
+    "id": "claude-opus-5",
+    "profile_rules": {
+      "weak": {
+        "risk_mult": 0.5,
+        "planned_only": true,
+        "require_status": "confirmed",
+        "force_dry_run": true
+      }
+    }
+  },
+  "alerts": {
+    "poll_seconds": 1,
+    "max_events_per_day": 100,
+    "min_seconds_between_events": 60,
+    "min_seconds_between_critical_events": 15,
+    "max_events_per_minute": 6,
+    "critical_types": [
+      "wall_breach",
+      "spread_anomaly",
+      "gap",
+      "sl_jumped",
+      "data_stale"
+    ],
+    "max_silence_minutes": 180
+  },
+  "session": {
+    "trade_window_utc": [
+      "07:00",
+      "20:00"
+    ],
+    "no_new_after_utc": "19:00",
+    "friday_no_new_utc": "15:00",
+    "friday_flat_utc": "19:00",
+    "swap_block_utc": [
+      "20:45",
+      "21:15"
+    ],
+    "phases": {
+      "BRIEF": [
+        "05:30",
+        "06:50"
+      ],
+      "LONDON": [
+        "07:00",
+        "11:00"
+      ],
+      "LULL": [
+        "11:00",
+        "12:15"
+      ],
+      "NY": [
+        "12:15",
+        "16:00"
+      ],
+      "WINDDOWN": [
+        "16:00",
+        "19:00"
+      ],
+      "REVIEW": [
+        "19:00",
+        "19:40"
+      ]
+    }
+  },
+  "news": {
+    "normal_window_min": [
+      30,
+      15
+    ],
+    "top_window_min": [
+      60,
+      30
+    ],
+    "top_events": [
+      "FOMC",
+      "NFP",
+      "Non-Farm",
+      "CPI",
+      "Interest Rate",
+      "Rate Decision",
+      "Powell",
+      "Lagarde",
+      "Bailey",
+      "Ueda"
+    ],
+    "cache_max_age_hours": 24,
+    "fail_mode": "halt_new"
+  },
+  "instruments": {
+    "whitelist": [
+      "XAUUSD",
+      "EURUSD",
+      "GBPUSD",
+      "USDJPY",
+      "AUDUSD",
+      "USDCAD",
+      "USDCHF"
+    ],
+    "spread_anomaly_mult": 1.5,
+    "spread_median_days": 5
+  },
+  "constitution": {
+    "immutable_by_agent": [
+      "risk",
+      "session",
+      "news",
+      "alerts",
+      "constitution"
+    ],
+    "config_hash_check": true
+  },
+  "perception": {
+    "atr_period": 30,
+    "momentum_bars": [
+      5,
+      15,
+      30
+    ],
+    "range_bars": 30,
+    "ema_fast": 12,
+    "ema_slow": 26,
+    "atr_pctile_lookback": 500,
+    "use_closed_bars_only": true,
+    "snapshot_token_budget": 2000
+  },
+  "learning": {
+    "min_n_for_confirmed": 20,
+    "reflect_every_k_closed_trades": 10,
+    "reflect_on_session_end": true
+  },
+  "loop": {
+    "cycle_seconds": 300
+  }
+}

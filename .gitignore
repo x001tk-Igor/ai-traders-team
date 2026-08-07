@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+
+# Доступы и рабочее состояние счёта — живут ВНЕ репозитория.
+# Здесь на случай, если каталог состояния окажется внутри дерева.
+telegram.json
+telegram_outbox.jsonl
+trader-state/
+journal.jsonl
+playbook.md
+*.env
+.env
+secrets.json
